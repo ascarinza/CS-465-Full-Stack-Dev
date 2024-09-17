@@ -4,14 +4,14 @@ const path = require('path');
 const fs = require('fs');
 
 // Define the path to the JSON file
-const tripsPath = path.join(__dirname, '..', 'data', 'trips.json');
+const roomsPath = path.join(__dirname, '..', 'data', 'rooms.json');
 
 // Read and parse the JSON file
-const trips = JSON.parse(fs.readFileSync(tripsPath, 'utf8'));
+const rooms = JSON.parse(fs.readFileSync(roomsPath, 'utf8'));
 
-/* Get travel view */
+/* Get rooms view */
 router.get('/', (req, res) => {
-    res.render('travel', { title: 'Travelr Getaways', trips });
+    res.render('rooms', { title: 'Travelr Getaways', rooms });
 });
 
 module.exports = router;
