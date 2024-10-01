@@ -1,9 +1,21 @@
-var fs = require('fs')
-var trips = JSON.parse(fs.readFileSync('./data/trips.json', 'utf8'))
+const tripEndpoint = http://localhost:3000/api/travel
+const options = {
+    method : 'GET',
+    headers: {'Accept' : 'application/json'
+    }
+}
 
-/* Get travel view */
-const travel = (req, res) => {
-    res.render('travel', { title : 'Travelr Getaways', trips});
+/* GET travel view*/
+const travel = async function (req, res, next) {
+    //console/log('Travel Controller begin');
+    await fetch(tripsEndpoint, options)
+        .then(res => res.json())
+        .then(json => {
+            //console.log(json);
+            res.render('travel', {title : "Travlr Getaways", trips : json});
+        })
+        .catch(err => res.status(500).send(e.message));
+    //console.log('Travel Controller After Render);
 };
 
 module.exports = {
