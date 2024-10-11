@@ -11,6 +11,7 @@ var roomsRouter = require('./app_server/routes/rooms');
 var apiRouter = require('./app_api/routes/index');
 
 var handlebars = require('hbs');
+const cors = require('cors');
 
 require('./app_api/models/db');
 
@@ -26,6 +27,22 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+// CORS
+//app.use('/api', (req, res, next) => {
+  //res.header('Access-Control-Allow-Origin', 'http://localhost:4200');
+  //res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept'); // Corrected 'Acess' to 'Access'
+  //res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS'); // Allow specific methods
+  //next();
+//});
+var corsOptions = {
+  origin: 'http://localhost:4200',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept'],
+};
+
+//Enable CORS
+app.use(cors(corsOptions));
 
 // Tests for app.use router functions
 console.log('indexRouter:', typeof indexRouter);
