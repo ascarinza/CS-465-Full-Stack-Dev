@@ -67,6 +67,7 @@ export class EditTripComponent implements OnInit{
             console.log('Error: ' + error);
         }
       })
+
   }
 
   public onSubmit() {
@@ -86,6 +87,19 @@ export class EditTripComponent implements OnInit{
       })
     }
   }
+
+  public deleteTrip(tripCode: string): void {
+    this.tripDataService.deleteTrip(tripCode)
+      .subscribe({
+        next: (response: any) => {
+          console.log('Trip deleted successfuly: ' , response);
+          this.router.navigate(['']);
+        },
+        error: (error: any) => {
+          console.log('Error deleting trip: ', error);
+        }
+      })
+    }
 
   // get the form short name to access the form fields
   get f() { return this.editForm.controls; }

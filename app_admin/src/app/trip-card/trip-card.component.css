@@ -1,0 +1,15 @@
+card {
+    position: relative;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+  }
+  
+  .card-body {
+    padding: 16px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: space-between; /* Aligns buttons on opposite sides */
+    padding: 16px;
+  }

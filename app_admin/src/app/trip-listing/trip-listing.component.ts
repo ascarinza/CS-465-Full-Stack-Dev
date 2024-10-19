@@ -32,6 +32,10 @@ export class TripListingComponent implements OnInit{
     this.router.navigate(['add-trip']);
   }
 
+  public removeTrip(tripCode: string) {
+    this.trips = this.trips.filter(trip => trip.code !== tripCode);
+  }
+
   private getStuff(): void {
     this.tripDataService.getTrips()
     .subscribe({
