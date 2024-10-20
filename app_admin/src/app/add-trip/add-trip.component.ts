@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup,  Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TripDataService } from '../services/trip-data.service';
 
@@ -14,11 +14,12 @@ import { TripDataService } from '../services/trip-data.service';
 export class AddTripComponent implements OnInit {
   public addForm!: FormGroup;
   submitted = false;
+  public formError: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private tripService: TripDataService
+    private tripDataService: TripDataService
   ) {}
 
   ngOnInit() {
@@ -35,19 +36,27 @@ export class AddTripComponent implements OnInit {
     });
   }
 
-  public onSubmit() {
-    this.submitted = true;
+  public onSubmit(): void {
+    this.formError = '';  // Clear previous errors
 
     if (this.addForm.valid) {
-      this.tripService.addTrip(this.addForm.value).subscribe({
-        next: (data: any) => {
-          console.log(data);
-          this.router.navigate(['']);
-        },
-        error: (error: any) => {
-          console.log('Error: ' + error);
-        }
-      });
+      this.tripDataService.addTrip(this.addForm.value)
+        .subscribe({
+          next: (response) => {
+            console.log('Trip added successfully:', response);
+            this.router.navigate(['/']);  // Redirect after successful addition
+          },
+          error: (error) => {
+            console.log('Error adding trip:', error);
+            if (error.status === 401) {
+              this.formError = 'You are not authorized. Please log in again.';
+            } else {
+              this.formError = 'An error occurred while adding the trip. Please try again.';
+            }
+          }
+        });
+    } else {
+      this.formError = 'All fields are required.';
     }
   }
 

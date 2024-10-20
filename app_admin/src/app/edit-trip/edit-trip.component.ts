@@ -17,6 +17,7 @@ export class EditTripComponent implements OnInit{
   trip!: Trip;
   submitted = false;
   message : string = '';
+  formError: string = '';
 
   constructor(
     private formBuilder: FormBuilder,
@@ -72,19 +73,22 @@ export class EditTripComponent implements OnInit{
 
   public onSubmit() {
     this.submitted = true;
-
-    if(this.editForm.valid) {
+  
+    if (this.editForm.valid) {
       this.tripDataService.updateTrip(this.editForm.value)
-      .subscribe({
-        next: (value: any) => {
-          console.log(value);
-          this.router.navigate(['']);
-        },
-
-        error: (error: any) => {
-          console.log('Error ' + error);
-        }
-      })
+        .subscribe({
+          next: (value: any) => {
+            console.log('Trip updated successfully:', value);
+            this.router.navigate(['']); // Redirect after successful update
+          },
+          error: (error: any) => {
+            console.log('Error updating trip:', error);
+            // Check if the error is related to authentication
+            if (error.status === 401) {
+              this.formError = 'You are not authorized. Please log in again.';
+            }
+          }
+        });
     }
   }
 
@@ -100,7 +104,7 @@ export class EditTripComponent implements OnInit{
         }
       })
     }
-
+    
   // get the form short name to access the form fields
   get f() { return this.editForm.controls; }
 
